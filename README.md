@@ -14,6 +14,11 @@ We can use this tool to summarize a work meeting or a video lecture into a text 
 This program has **three API** paths which are **upload**, **transcribe**,
 and **summarize**.
 
+### Multipart Form Data Parser in C
+Additionally, I used a minimal from data parser written by Brian Khuu in C! 😎👌🔥
+
+https://briankhuu.com/blog/2025/01/10/minimal-multipart-form-data-parser-in-c/
+
 ## Start the Server
 ```
 gcc server.c -lcurl -ljson-c minimal_multipart_parser.c -o server
