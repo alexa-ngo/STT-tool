@@ -1,0 +1,427 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech to Text Transcription</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .upload-section {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            background: #f8f9ff;
+            transition: all 0.3s ease;
+        }
+
+        .upload-section:hover {
+            border-color: #764ba2;
+            background: #f0f1ff;
+        }
+
+        .upload-section.dragover {
+            border-color: #764ba2;
+            background: #e8e9ff;
+            transform: scale(1.02);
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+
+        input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+        }
+
+        .upload-icon {
+            font-size: 4em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        #file-name {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        #transcription-result {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f9ff;
+            border-radius: 15px;
+            display: none;
+        }
+
+        #transcription-result.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-title {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e8e9ff;
+            padding-bottom: 10px;
+        }
+
+        .transcription-text {
+            color: #333;
+            line-height: 1.8;
+            font-size: 1em;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-text {
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .error {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .success {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎤 Speech to Text Transcription</h1>
+        <p class="subtitle">Upload your MP4 video and get instant transcription</p>
+
+        <div class="upload-section" id="drop-zone">
+            <div class="upload-icon">☁️</div>
+            <h3>Drag & Drop Your MP4 File Here</h3>
+            
+            <div class="file-input-wrapper" id="file-input-wrapper">
+                <input type="file" id="file-input" accept=".mp4">
+            </div>
+
+            <button class="btn" id="upload-btn" onclick="handleFileSelect()">
+                📤 Upload & Transcribe
+            </button>
+
+            <p id="file-name"></p>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p class="status-text" id="status-text">Uploading file...</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+
+        <div id="transcription-result">
+            <h2 class="result-title">📝 Transcription Result</h2>
+            <div class="transcription-text" id="transcription-output"></div>
+        </div>
+    </div>
+
+    <script>
+        const SERVER_URL = 'http://localhost:1234';
+        
+        let selectedFile = null;
+
+        // Drag and drop functionality
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropZone.classList.add('dragover');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropZone.classList.remove('dragover');
+            });
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type === 'video/mp4') {
+                selectedFile = files[0];
+                displayFileName(selectedFile.name);
+            } else {
+                showError('Please select a valid MP4 file');
+            }
+        });
+
+        function handleFileSelect() {
+            if (selectedFile && selectedFile.type === 'video/mp4') {
+                startUpload();
+            } else {
+                // Trigger the actual file input click to open the file browser
+                document.getElementById('file-input-wrapper').click();
+                
+                // If a file was already selected via drag-drop, upload it
+                if (selectedFile && selectedFile.type === 'video/mp4') {
+                    startUpload();
+                } else {
+                    showError('Please select an MP4 file first');
+                }
+            }
+        }
+
+        function displayFileName(name) {
+            document.getElementById('file-name').textContent = `Selected: ${name}`;
+        }
+
+        async function startUpload() {
+            showLoading(true, 'Uploading file...');
+            
+            try {
+                const formData = new FormData();
+                formData.append('file', selectedFile);
+
+                // Step 1: Upload the file
+                const uploadResponse = await fetch(`${SERVER_URL}/api/upload`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Content-Type': 'video/mp4',
+                        'Accept': 'application/json'
+                    },
+                });
+
+                if (!uploadResponse.ok) {
+                    throw new Error('Upload failed');
+                }
+
+                const uploadData = await uploadResponse.json();
+                console.log('Uploaded filename:', uploadData.filename);
+                console.log('335 Server_URL:', SERVER_URL);
+
+                // Step 2: Transcribe the uploaded file
+                showLoading(true, 'Transcribing... This may take a few minutes.');
+                
+                const transcribeResponse = await fetch(`${SERVER_URL}/api/transcribe`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ filename: uploadData.filename }),
+                });
+
+                console.log('348 Transcribe Response:', transcribeResponse);
+
+                if (!transcribeResponse.ok) {
+                    throw new Error('Transcription failed');
+                }
+
+                const transcription = await transcribeResponse.json();
+                
+                showResult(transcription.data);
+            
+            } catch (error) {
+                console.error('Error:', error);
+                showError(`Error: ${error.message}`);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function showLoading(show, text = '') {
+            const loading = document.getElementById('loading');
+            const statusText = document.getElementById('status-text');
+            
+            if (show) {
+                loading.classList.add('show');
+                if (text) {
+                    statusText.textContent = text;
+                }
+            } else {
+                loading.classList.remove('show');
+            }
+        }
+
+        function showResult(text) {
+            const resultDiv = document.getElementById('transcription-result');
+            const outputDiv = document.getElementById('transcription-output');
+            
+            outputDiv.textContent = text;
+            resultDiv.classList.add('show');
+            
+            // Scroll to results
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error';
+            errorDiv.textContent = message;
+            dropZone.appendChild(errorDiv);
+            
+            setTimeout(() => errorDiv.remove(), 5000);
+        }
+
+        // Handle file input change - this is the key fix!
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0 && e.target.files[0].type === 'video/mp4') {
+                selectedFile = e.target.files[0];
+                displayFileName(selectedFile.name);
+                
+                // Auto-upload when a file is selected
+                setTimeout(() => startUpload(), 500);
+            } else if (e.target.files.length > 0) {
+                showError('Please select an MP4 file');
+            }
+        });
+
+        // Keyboard shortcut - Enter key to upload
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !loadingVisible()) {
+                handleFileSelect();
+            }
+        });
+
+        function loadingVisible() {
+            return document.getElementById('loading').classList.contains('show');
+        }
+    </script>
+</body>
+</html>
