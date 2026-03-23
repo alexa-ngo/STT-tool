@@ -626,7 +626,7 @@ char* make_whisper_transcription_str(char* transcribed_unix_time_output_wav_resu
 
     // Find the whsiper_cli_location:
     // The first part of the string: "GGML_VK_VISIBLE_DEVICES=1 /home/jane_doe/Code/whisper.cpp/build/bin/whisper-cli -m ";
-    char* base_path = "/home/ango/Code";
+    char* base_path = "/home/jane_doe/Code";
     char* GGML_VK_VISIBLE_DEVICES_1 = "GGML_VK_VISIBLE_DEVICES=1 ";
     char* whisper_dot_cpp_base_str = "/whisper.cpp";
     char* build_bin_whisper_cli_dash_m = "/build/bin/whisper-cli -m ";
@@ -762,7 +762,7 @@ void handle_shutdown(int sig) {
 // Execute the transcribe part of the code
 int execute_transcribe(int connect_d, char *buf)
 {
-    char *base_str = "/home/ango/";
+    char *base_str = "/home/jane_doe/";
     char *mp4 = ".mp4";
     char *output = "-output";
     char *transcribed = "transcribed/";
