@@ -122,7 +122,7 @@ gcc demux_decode.c -I /usr/include/ffmpeg -lavcodec -lavutil -lavformat -o demux
 **Command -- The client sends the following upload curl request to the server**
 This would be the path of the .mp4 file and then calling the server at the specified port number
 ```
-curl -X POST -H 'Content-Type: video/mp4' -F "bob=@/home/ango/Code/speech-to-text-translation-tool/Dream.mp4" http://localhost:1234/api/upload 
+curl -X POST -H 'Content-Type: video/mp4' -F "bob=@/home/ango/Code/speech-to-text-translation-tool/Dream.mp4" http://<ip_address_of_server>:1234/api/upload
 ```
 
 **Response from Server back to the client -- UNIX time as a filename sent back to the client**
