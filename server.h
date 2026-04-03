@@ -19,6 +19,9 @@
 #include <time.h>
 #include <unistd.h>
 
+// User custom path
+#define USER_CUSTOM_BASE_PATH "/home/alexa/home/Code"
+
 // API
 #define API_ERROR -1
 #define API_PING 5
