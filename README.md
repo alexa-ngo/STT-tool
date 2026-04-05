@@ -166,7 +166,7 @@ file back to the client.
 
 **Command - Client sends a curl request of a .mp4 file to the server**
 ```
-curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"filename":"1766321407.mp4"}' http://localhost:12346/api/transcribe
+curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"filename":"1766321407.mp4"}' http://<IP_ADDRESS_OF_SERVER>:1234/api/transcribe
 ```
 And the server will respond back to the client with a JSON like so:
 ![transcribe.png](transcribe.png)
