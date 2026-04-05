@@ -799,7 +799,7 @@ int execute_transcribe(int connect_d, char *buf)
 
         // This ffmpeg1_str code makes: ffmpeg -i /home/jane_doe/Code/STT-tool/video/
         char *ffmpeg_dash_i = "ffmpeg -i ";
-        char *speech_to_text_translation_tool_slash_video = "Code/STT-tool/video/";
+        char *speech_to_text_translation_tool_slash_video = "/STT-tool/video/";
         char *ffmpeg1_str = make_a_string(ffmpeg_dash_i, base_str, speech_to_text_translation_tool_slash_video);
 
         // The ffmpeg_str_final_part_last_chunk makes:

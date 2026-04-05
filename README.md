@@ -55,6 +55,34 @@ ___
 3. Summarize
 ___
 
+## FFmpeg
+First install FFmpeg and then run the following commands:
+
+**Command -- We can check that the file upload worked**
+```
+ffplay -f f32le -ar 44100 transcribed/171234
+
+# my version
+ffplay -f f32le -ar 44100 transcribed/1766321407(witout an extension)
+```
+**Command -- convert the file into a format Whisper can user**
+```
+ffmpeg -f f32le -ar 16000 -ac 2 -i transcribed/171234 transcribed/17123.wav
+```
+
+## Confirm that the file upload worked
+```
+ffplay -f f32le -ar 44100 transcribed/171234
+
+# my version
+ffplay -f f32le -ar 44100 transcribed/1766321407(witout an extension)
+```
+**Command -- convert the file into a format Whisper can convert**
+```
+ffmpeg -f f32le -ar 16000 -ac 2 -i 171234 171234-output.wav 
+```
+
+
 # 📝 Build and Run Whisper.cpp for Transcription
 
 Let's build Whisper.cpp to summarize the transcription! 😀💯
@@ -130,33 +158,6 @@ curl -X POST -H 'Content-Type: video/mp4' -F "bob=@/home/ango/Code/speech-to-tex
 {"filename" : "171234.mp4"}
 ```
 
-## FFmpeg
-First install FFmpeg and then run the following commands:
-
-**Command -- We can check that the file upload worked**
-```
-ffplay -f f32le -ar 44100 transcribed/171234
-
-# my version
-ffplay -f f32le -ar 44100 transcribed/1766321407(witout an extension)
-```
-**Command -- convert the file into a format Whisper can user**
-```
-ffmpeg -f f32le -ar 16000 -ac 2 -i transcribed/171234 transcribed/17123.wav
-```
-
-## Confirm that the file upload worked
-```
-ffplay -f f32le -ar 44100 transcribed/171234
-
-# my version
-ffplay -f f32le -ar 44100 transcribed/1766321407(witout an extension)
-```
-**Command -- convert the file into a format Whisper can convert**
-```
-ffmpeg -f f32le -ar 16000 -ac 2 -i 171234 171234-output.wav 
-```
-
 ## Transcribe the Uploaded Media File <a name="transcribe"></a>
 
 To transcribe a file, the client will send a filename as a curl request to the server.
@@ -165,7 +166,7 @@ file back to the client.
 
 **Command - Client sends a curl request of a .mp4 file to the server**
 ```
-curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"filename":"1766321407.mp4"}' http://localhost:12346/api/transcribe
+curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"filename":"1766321407.mp4"}' http://<IP_ADDRESS_OF_SERVER>:1234/api/transcribe
 ```
 And the server will respond back to the client with a JSON like so:
 ![transcribe.png](transcribe.png)

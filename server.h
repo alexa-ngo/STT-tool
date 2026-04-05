@@ -20,7 +20,7 @@
 #include <unistd.h>
 
 // User custom path
-#define USER_CUSTOM_BASE_PATH "/home/alexa/home/Code"
+#define USER_CUSTOM_BASE_PATH "/home/alexa/"
 
 // API
 #define API_ERROR -1
