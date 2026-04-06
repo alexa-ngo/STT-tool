@@ -23,6 +23,9 @@
 #define USER_CUSTOM_BASE_PATH "/home/alexa/"
 // Example of the USER_CUSTOM_ENDPOINT_STR "http://127.0.0.1:8000/v1/chat/completions"
 #define USER_CUSTOM_ENDPOINT_STR "http://127.0.0.1:8000/v1/chat/completions";
+// Example of the USER_CUSTOM_GGML_VK_VISIBLE_DEVICES_NUM "GGML_VK_VISIBLE_DEVICES=1 ";
+// If you have a second GPU, set the variable to 1. If you're unsure, use nvtop to find the integer
+#define USER_CUSTOM_GGMLK_VK_VISIBLE_DEVICES_NUM "GGML_VK_VISIBLE_DEVICES=0 "
 
 // API
 #define API_ERROR -1
