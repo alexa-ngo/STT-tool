@@ -618,17 +618,19 @@ char* make_whisper_transcription_str(char* transcribed_unix_time_output_wav_resu
     memset(whisper_buf, '\0', ONE_HUNDRED_THOUSAND_BYTES * sizeof(char));
 
     /*
-    First string >> whisper_cli_location = "GGML_VK_VISIBLE_DEVICES=1 /home/jane/whisper.cpp/build/bin/whisper-cli -m ";
+    First string >> whisper_cli_location = "GGML_VK_VISIBLE_DEVICES=0 /home/jane/whisper.cpp/build/bin/whisper-cli -m ";
     Second string >> char* medium_model = "/home/jane_doe/Code/whisper.cpp/models/ggml-medium.en.bin -f ";
     Third string >>  "/home/jane_doe/Code/STT-tool/";    // builds transcribed/17123-output.wav
     Flag to turn on timestamps >> "-ml 120 ";
     */
 
     // Find the whsiper_cli_location:
-    // The first part of the string: "GGML_VK_VISIBLE_DEVICES=1 /home/jane_doe/Code/whisper.cpp/build/bin/whisper-cli -m ";
+    // The first part of the string: "GGML_VK_VISIBLE_DEVICES=0 /home/jane_doe/Code/whisper.cpp/build/bin/whisper-cli -m ";
     char* base_path = USER_CUSTOM_BASE_PATH;
-    char* GGML_VK_VISIBLE_DEVICES_1 = "GGML_VK_VISIBLE_DEVICES=1 ";
-    char* whisper_dot_cpp_base_str = "/whisper.cpp";
+	// User may configure and customize the GGML_VK variable
+    // Example: char* GGML_VK_VISIBLE_DEVICES = "GGML_VK_VISIBLE_DEVICES=0 ";
+    char* GGML_VK_VISIBLE_DEVICES = USER_CUSTOM_GGMLK_VK_VISIBLE_DEVICES_NUM;
+	char* whisper_dot_cpp_base_str = "/whisper.cpp";
     char* build_bin_whisper_cli_dash_m = "/build/bin/whisper-cli -m ";
 
     // The second part of the string:
@@ -645,7 +647,7 @@ char* make_whisper_transcription_str(char* transcribed_unix_time_output_wav_resu
     char* space = " ";
     char* null_char = "\0";
 
-    strcat(whisper_buf, GGML_VK_VISIBLE_DEVICES_1);
+    strcat(whisper_buf, GGML_VK_VISIBLE_DEVICES);
     strcat(whisper_buf, base_path);
     strcat(whisper_buf, whisper_dot_cpp_base_str);
     strcat(whisper_buf, build_bin_whisper_cli_dash_m);
