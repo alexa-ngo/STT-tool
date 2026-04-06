@@ -1147,8 +1147,9 @@ int main (int argc, char* argv[])
                         }
                         // Set Custom Headers
                         // For the endpoint I may even use http://10.171.168.174:8000
-                        char *your_end_point = "http://127.0.0.1:8000/v1/chat/completions";
-                        curl_easy_setopt(curl_handle, CURLOPT_HTTPHEADER, slist2);
+                        //char *your_end_point = "http://127.0.0.1:8000/v1/chat/completions";
+	                    char *your_end_point = USER_CUSTOM_ENDPOINT_STR;
+						curl_easy_setopt(curl_handle, CURLOPT_HTTPHEADER, slist2);
                         curl_easy_setopt(curl_handle, CURLOPT_URL, your_end_point);
                         // Pass in a pointer to the data - libcurl does not copy
                         char *response = (char *) malloc(EIGHT_THOUSAND_BYTES * sizeof(char));

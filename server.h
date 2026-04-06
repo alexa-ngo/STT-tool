@@ -21,6 +21,8 @@
 
 // User custom path
 #define USER_CUSTOM_BASE_PATH "/home/alexa/"
+// Example of the USER_CUSTOM_ENDPOINT_STR "http://127.0.0.1:8000/v1/chat/completions"
+#define USER_CUSTOM_ENDPOINT_STR "http://127.0.0.1:8000/v1/chat/completions";
 
 // API
 #define API_ERROR -1
