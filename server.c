@@ -805,7 +805,7 @@ int execute_transcribe(int connect_d, char *buf)
         // The ffmpeg_str_final_part_last_chunk makes:
         // ".mp4 -vn -acodec pcm_s16le /home/jane_doe/Code/STT-tool/wav-files/"
         char *mp4_vn_acodec_pcm_s16le = ".mp4 -vn -acodec pcm_s16le ";
-        char *speech_to_text_translation_tool_wav_file = "Code/STT-tool/wav-files/";
+        char *speech_to_text_translation_tool_wav_file = "/STT-tool/wav-files/";
         char *ffmpeg_str_first_part_last_chunk = make_a_string(mp4_vn_acodec_pcm_s16le, base_str, speech_to_text_translation_tool_wav_file);
         char *ffmpeg_str_first_part = make_a_string(ffmpeg1_str,filename_from_curl, ffmpeg_str_first_part_last_chunk);
         char *ffmpeg_final_str = make_a_string(ffmpeg_str_first_part,filename_from_curl, ".wav");

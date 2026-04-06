@@ -221,7 +221,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"data" : "
 ```
 #### Command - Curl request sent from the client to the server
 ```
-curl -X POST -H "Content-Type: application/json" -d '{"data" : "Write me a three letter word."}' http://localhost:1234/api/summarize
+curl -X POST -H "Content-Type: application/json" -d '{"data" : "Write me a three letter word."}' http://<IP_ADDRESS_OF_LM_MODEL>:1234/api/summarize
 ```
 
 ___
