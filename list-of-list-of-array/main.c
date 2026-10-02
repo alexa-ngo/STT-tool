@@ -1,4 +1,4 @@
-// 8/2 3PM - Make an array of character
+// 8/3 1PM - Make an array of character; typed at 8/2/26
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -101,10 +101,6 @@ int* count_total_unique_groups(char** string_ptr, int num_of_strings, int* arr)
 
 int main(void)
 {
-    // Head node of all Letter nodes
-    struct Letter_node* head_node_of_all_letter_nodes = create_letter_node();
-    head_node_of_all_letter_nodes->letter_label_char_int = -1;
-
     int num_of_strings = 12;
     // 8 Unique string
     char* james_str = "james";
@@ -128,19 +124,43 @@ int main(void)
     int arr[TWENTY_SIX_ALPHA_LETTERS] = {0};
     int* arr_result = count_total_unique_groups(string_ptr, num_of_strings, arr);
 
+    // Head node of all Letter nodes
+    struct Letter_node* head_node_of_all_letter_nodes = create_letter_node();
+    head_node_of_all_letter_nodes->letter_label_char_int = -1;
+
     for (int a = 0; a < TWENTY_SIX_ALPHA_LETTERS; a++)
     {
-        int each_char = *(arr_result + a);
-        if (each_char > 0) {
-            printf("133: %i with letter: %c\n", *(arr_result + a), a + LETTER_A_97);
+        int num_of_str_in_letter = *(arr_result + a);
+        int each_letter = a + LETTER_A_97;
+        if (num_of_str_in_letter > 0) {
+            struct Letter_node* letter_node = create_letter_node();
+            letter_node->letter_label_char_int = each_letter;
+            letter_node->num_of_unique_str_in_each_letter_group = *(arr_result + a);
+            struct Letter_node* temp = head_node_of_all_letter_nodes;
+             while (temp->next != NULL) {
+                //printf("141: letter_label: %c (%i) num_unique_str_in_group: %i \n", temp->letter_label_char_int, temp->letter_label_char_int, temp->num_of_unique_str_in_each_letter_group);
+                temp = temp->next;
+            }
+            temp->next = letter_node;
         }
     }
-
     //char** arr_of_lists[total_unique_groups];
+
     // Place only letters into nodes
-    for (int i = 0; i < num_of_strings; i++) {
+    head_node_of_all_letter_nodes = head_node_of_all_letter_nodes->next;
+    while (head_node_of_all_letter_nodes->next != NULL){
+        printf("156: %i %c occur: %i\n", head_node_of_all_letter_nodes->letter_label_char_int, head_node_of_all_letter_nodes->letter_label_char_int, head_node_of_all_letter_nodes->num_of_unique_str_in_each_letter_group);
+        head_node_of_all_letter_nodes = head_node_of_all_letter_nodes->next;
+    }
+    //for (int i = 0; i < num_of_strings; i++) {
+        /*
         char* curr_str = string_ptr[i];
-        char first_char = *(curr_str + 0);
+        int first_char = *(curr_str + 0);
+        struct Letter_node* letter_node = create_letter_node();
+        letter_node->letter_label_char_int = first_char;
+        printf("146: %c %s\n", letter_node->letter_label_char_int, curr_str);
+        */
+
         //printf("140: >>>>>>>> First char only: %c of curr_str: %s\n", first_char, curr_str);
 
         // Make letter node for each letter /////////////////////////////
@@ -155,11 +175,12 @@ int main(void)
         ///
         // Assign the letter to the first index of the list_of_list_arr
         //*(list_of_list_of_arr + list_of_list_of_arr_idx) = new_letter;s
-    }
+    //}
+    /*
     // Make a letter node and string
     for (int j = 0; j < num_of_strings; j++) {
-
     }
+    */
     //printf("135: total_unique_groups: %i\n", total_unique_groups);
 
     //printf("110: head_node_of_all_letter_nodes: %i\n head_node: %p\nnum_uniq_group: %i\n", head_node_of_all_letter_nodes->letter_label_char_int, head_node_of_all_letter_nodes->head_node, head_node_of_all_letter_nodes->num_of_unique_str_in_each_letter_group);
